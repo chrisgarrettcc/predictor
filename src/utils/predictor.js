@@ -30,7 +30,12 @@ const fixtures = (league, callback) => {
     var mm = String(today.getMonth() + 1).padStart(2, '0'); //January is 0!
     var yyyy = today.getFullYear();
     today = yyyy + '-' + mm + '-' + dd;
-    const url = 'https://v2.api-football.com/fixtures/league/' + league + '/' + today;
+    if (league == 'all') {
+        var url = 'https://v2.api-football.com/fixtures/date/' + today + '?timezone=Europe/London';
+    } else {
+        var url = 'https://v2.api-football.com/fixtures/league/' + league + '/' + today;
+    }
+    
     request({
         url : url,
         json : true,

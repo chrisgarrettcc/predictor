@@ -6,8 +6,14 @@ const gamesToSearch = document.querySelector('input')
 
 leagueForm.addEventListener('submit', (e) => {
     e.preventDefault();
-    const leagueValue = leagueSelect.options[leagueSelect.selectedIndex].value;
-    fetch('/fixtures?league=' + encodeURIComponent(leagueValue)).then((response) => {
+    if (e.submitter.name == 'leagueFixtues') {
+        const leagueValue = leagueSelect.options[leagueSelect.selectedIndex].value;
+        var url = '/fixtures?league=' + encodeURIComponent(leagueValue);
+    } else {
+        var url = '/fixtures?league=all';
+    }
+
+    fetch(url).then((response) => {
         response.json().then((data) => {
             if (data.fixtures.length === 0) {
                 fixtureContainer.textContent = 'No fixtures today for that competition';
@@ -21,21 +27,9 @@ leagueForm.addEventListener('submit', (e) => {
             }
         });
     })
-    /*message1.textContent = 'Loading...'
-    fetch('/weather?address=' +  encodeURIComponent(location)).then((response) => {
-        response.json().then((data) => {
-            message1.textContent = '';
-            message2.textContent = '';
-            if (data.errorMessage) {
-                message1.textContent = data.errorMessage;
-            } else {
-                message1.textContent = data.location;
-                message2.textContent = data.forecast
-            }
-            
-            
-        })
-    })*/
+
+
+
 
 })
 
@@ -55,17 +49,17 @@ const getResults = (team) => {
             })
             const td = document.querySelector('#team' + team);
             let perc = (totalBTTS / matchesPlayed) * 100;
-        
+
             td.innerHTML = totalBTTS + ' / ' + matchesPlayed + ' (' + perc.toFixed(0) + '%)';
-            if (perc >49) {
+            if (perc > 49) {
                 td.style.color = 'green';
                 td.style.fontWeight = 'bold';
             }
         });
-        
+
     })
-    
-    
+
+
 }
 
 const drawTable = (fixtures) => {
